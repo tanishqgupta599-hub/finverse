@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +26,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+        variables: {
+          colorPrimary: "#10b981", // Emerald-500 matches app theme
+          colorBackground: "#09090b", // Zinc-950
+          colorInputBackground: "#18181b", // Zinc-900
+          colorInputText: "#ffffff",
+          colorText: "#ffffff",
+          colorTextSecondary: "#a1a1aa", // Zinc-400
+        },
+        elements: {
+          card: "bg-zinc-900 border border-zinc-800 shadow-xl",
+          headerTitle: "text-white",
+          headerSubtitle: "text-zinc-400",
+          socialButtonsBlockButton: "bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-white",
+          socialButtonsBlockButtonText: "text-white",
+          formButtonPrimary: "bg-emerald-500 hover:bg-emerald-600 text-white",
+          footerActionLink: "text-emerald-500 hover:text-emerald-400",
+        },
+      }}
+    >
       <html lang="en" suppressHydrationWarning>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <Providers>{children}</Providers>
