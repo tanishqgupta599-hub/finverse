@@ -18,7 +18,6 @@ type Command = {
 };
 
 export function TopBar() {
-  const profile = useAppStore((s) => s.profile);
   const featureFlags = useAppStore((s) => s.featureFlags);
   const transactions = useAppStore((s) => s.transactions);
   const creditCards = useAppStore((s) => s.creditCards);
@@ -161,15 +160,6 @@ export function TopBar() {
           </button>
           <ThemeToggle />
           <UserButton afterSignOutUrl="/sign-in" />
-          <Link href="/profile">
-            <button
-              type="button"
-              className="flex items-center gap-2 rounded-full px-2 py-1 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
-            >
-              <User className="h-5 w-5" />
-              <span className="hidden sm:block text-sm">{profile?.name ?? "Profile"}</span>
-            </button>
-          </Link>
         </div>
       </div>
 
