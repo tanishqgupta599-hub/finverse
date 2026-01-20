@@ -4,6 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Bell, MessageCircle, Search, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
 import { ThemeToggle } from "../ui/ThemeToggle";
 import { Input } from "../ui/Input";
 import { useAppStore } from "@/state/app-store";
@@ -154,6 +155,7 @@ export function TopBar() {
             Feedback
           </button>
           <ThemeToggle />
+          <UserButton afterSignOutUrl="/sign-in" />
           <Link href="/profile">
             <button
               type="button"

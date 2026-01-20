@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/Input";
 import type { ProfileMode } from "@/domain/models";
 import { toast } from "sonner";
 import { useState } from "react";
-import { useAuthStore } from "@/state/auth-store";
+import { useClerk, useUser } from "@clerk/nextjs";
 
 export default function Settings() {
   const demoDataEnabled = useAppStore((s) => s.demoDataEnabled);
@@ -30,8 +30,8 @@ export default function Settings() {
   const updateNotificationPreferences = useAppStore(
     (s) => s.updateNotificationPreferences,
   );
-  const authUser = useAuthStore((s) => s.user);
-  const logout = useAuthStore((s) => s.logout);
+  const { user } = useUser();
+  const { signOut } = useClerk();
 
   const [appLockEnabled, setAppLockEnabled] = useState(false);
   const [biometricEnabled, setBiometricEnabled] = useState(false);
@@ -55,7 +55,7 @@ export default function Settings() {
   };
 
   const displayName =
-    profile?.name || authUser?.name || authUser?.email || "there";
+    profile?.name || user?.fullName || user?.primaryEmailAddress?.emailAddress || "there";
 
   return (
     <div className="space-y-4">
@@ -373,7 +373,7 @@ export default function Settings() {
               variant="secondary"
               className="text-red-400 hover:bg-red-500/10 hover:text-red-300"
               onClick={() => {
-                logout();
+                signOut({ redirectUrl: "/sign-in" });
                 toast.success("Logged out successfully");
               }}
             >

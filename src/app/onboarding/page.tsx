@@ -13,7 +13,7 @@ type StepId = 1 | 2 | 3 | 4 | 5 | 6;
 
 type LoanDraft = {
   name: string;
-  balance: string;
+  limitUtilized: string;
   apr: string;
   emi: string;
 };
@@ -46,7 +46,7 @@ export default function Onboarding() {
   const [incomeRange, setIncomeRange] = useState("");
   const [fixedCostRange, setFixedCostRange] = useState("");
   const [loans, setLoans] = useState<LoanDraft[]>([
-    { name: "", balance: "", apr: "", emi: "" },
+    { name: "", limitUtilized: "", apr: "", emi: "" },
   ]);
   const [insuranceHealth, setInsuranceHealth] = useState(false);
   const [insuranceTerm, setInsuranceTerm] = useState(false);
@@ -104,9 +104,9 @@ export default function Onboarding() {
     setProfileMode(mode);
 
     loans.forEach((loan, index) => {
-      if (!loan.name && !loan.balance && !loan.apr && !loan.emi) return;
-      if (!loan.name || !loan.balance) return;
-      const balanceValue = Number(loan.balance);
+      if (!loan.name && !loan.limitUtilized && !loan.apr && !loan.emi) return;
+      if (!loan.name || !loan.limitUtilized) return;
+      const balanceValue = Number(loan.limitUtilized);
       const aprValue = Number(loan.apr || 0);
       const emiValue = Number(loan.emi || 0);
       addLoan({
@@ -170,7 +170,7 @@ export default function Onboarding() {
 
   const addLoanRow = () => {
     if (loans.length >= 3) return;
-    setLoans((list) => [...list, { name: "", balance: "", apr: "", emi: "" }]);
+    setLoans((list) => [...list, { name: "", limitUtilized: "", apr: "", emi: "" }]);
   };
 
   const updateLoan = (index: number, patch: Partial<LoanDraft>) => {
@@ -376,10 +376,10 @@ export default function Onboarding() {
                         />
                         <div className="grid gap-2 sm:grid-cols-3">
                           <Input
-                            placeholder="Outstanding"
+                            placeholder="Limit Utilized"
                             inputMode="decimal"
-                            value={loan.balance}
-                            onChange={(e) => updateLoan(index, { balance: e.target.value })}
+                            value={loan.limitUtilized}
+                            onChange={(e) => updateLoan(index, { limitUtilized: e.target.value })}
                           />
                           <div>
                             <Input
