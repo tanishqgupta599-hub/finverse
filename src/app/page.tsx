@@ -50,11 +50,11 @@ export default function Landing() {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center gap-4"
           >
-            <Link href="/auth?mode=login" className="hidden text-sm font-medium text-zinc-400 hover:text-white md:block">
+            <Link href="/sign-in" className="hidden text-sm font-medium text-zinc-400 hover:text-white md:block">
               Sign in
             </Link>
             <Link
-              href="/auth?mode=signup"
+              href="/sign-up"
               className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-white px-6 py-2 text-sm font-semibold text-slate-950 transition-all hover:bg-cyan-50"
             >
               <span className="relative z-10 flex items-center gap-2">

@@ -107,7 +107,7 @@ export default function Page() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <SignIn />
+          <SignIn routing="path" path="/sign-in" />
         </motion.div>
       </div>
     </div>
