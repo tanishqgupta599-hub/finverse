@@ -62,67 +62,67 @@ export function BottomTabs() {
       <Sheet open={open} onOpenChange={setOpen} title="All modules">
         <div className="grid grid-cols-2 gap-3 p-1 text-sm">
           {flags.profile && (
-            <Link href="/profile" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
+            <Link onClick={() => setOpen(false)} href="/profile" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
               Identity
             </Link>
           )}
           {flags.subscriptions && (
-            <Link href="/subscriptions" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
+            <Link onClick={() => setOpen(false)} href="/subscriptions" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
               Subscriptions
             </Link>
           )}
           {flags.expenses && (
-            <Link href="/expenses" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
+            <Link onClick={() => setOpen(false)} href="/expenses" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
               Expenses
             </Link>
           )}
           {flags.investments && (
-            <Link href="/investments" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
+            <Link onClick={() => setOpen(false)} href="/investments" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
               Investments
             </Link>
           )}
           {flags.netWorth && (
-            <Link href="/net-worth" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
+            <Link onClick={() => setOpen(false)} href="/net-worth" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
               Net Worth
             </Link>
           )}
           {flags.debt && (
-            <Link href="/debt" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
+            <Link onClick={() => setOpen(false)} href="/debt" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
               Debt
             </Link>
           )}
           {flags.goals && (
-            <Link href="/goals" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
+            <Link onClick={() => setOpen(false)} href="/goals" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
               Goals
             </Link>
           )}
           {flags.circles && (
-            <Link href="/circles" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
+            <Link onClick={() => setOpen(false)} href="/circles" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
               Circles
             </Link>
           )}
           {flags.tax && (
-            <Link href="/tax" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
+            <Link onClick={() => setOpen(false)} href="/tax" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
               Tax
             </Link>
           )}
           {flags.safety && (
-            <Link href="/safety" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
+            <Link onClick={() => setOpen(false)} href="/safety" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
               Safety
             </Link>
           )}
           {flags.scam && (
-            <Link href="/scam" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
+            <Link onClick={() => setOpen(false)} href="/scam" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
               Scam shield
             </Link>
           )}
           {flags.reports && (
-            <Link href="/reports" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
+            <Link onClick={() => setOpen(false)} href="/reports" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
               Reports
             </Link>
           )}
           {flags.settings && (
-            <Link href="/settings" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
+            <Link onClick={() => setOpen(false)} href="/settings" className="rounded-xl border border-white/10 bg-zinc-900/80 p-3 text-zinc-300 hover:bg-white/5 hover:text-white hover:border-cyan-500/30 transition-all backdrop-blur-md">
               Settings
             </Link>
           )}
