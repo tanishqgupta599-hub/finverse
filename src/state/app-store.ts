@@ -753,14 +753,70 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
         return { ...c, expenses: [expense, ...c.expenses] };
       }),
     })),
-  addFriend: (friend) =>
+  addFriend: async (friend) => {
     set((s) => ({
       friends: [...s.friends, friend],
-    })),
-  addCalendarEvent: (event) =>
+    }));
+    try {
+      const response = await fetch("/api/friends", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(friend),
+      });
+      if (response.ok) {
+        const savedFriend = await response.json();
+        set((s) => ({
+          friends: s.friends.map((f) => (f.id === friend.id ? savedFriend : f)),
+        }));
+        toast.success("Friend added successfully");
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to add friend:", errorData);
+        toast.error(`Failed to add friend: ${errorData.error || "Unknown error"}`);
+        set((s) => ({
+          friends: s.friends.filter((f) => f.id !== friend.id),
+        }));
+      }
+    } catch (error) {
+      console.error("Failed to add friend:", error);
+      toast.error("Failed to add friend. Check connection.");
+      set((s) => ({
+        friends: s.friends.filter((f) => f.id !== friend.id),
+      }));
+    }
+  },
+  addCalendarEvent: async (event) => {
     set((s) => ({
       calendarEvents: [...s.calendarEvents, event],
-    })),
+    }));
+    try {
+      const response = await fetch("/api/calendar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(event),
+      });
+      if (response.ok) {
+        const savedEvent = await response.json();
+        set((s) => ({
+          calendarEvents: s.calendarEvents.map((e) => (e.id === event.id ? { ...savedEvent, date: new Date(savedEvent.date) } : e)),
+        }));
+        toast.success("Event added successfully");
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to add event:", errorData);
+        toast.error(`Failed to add event: ${errorData.error || "Unknown error"}`);
+        set((s) => ({
+          calendarEvents: s.calendarEvents.filter((e) => e.id !== event.id),
+        }));
+      }
+    } catch (error) {
+      console.error("Failed to add event:", error);
+      toast.error("Failed to add event. Check connection.");
+      set((s) => ({
+        calendarEvents: s.calendarEvents.filter((e) => e.id !== event.id),
+      }));
+    }
+  },
   removeCalendarEvent: (id) =>
     set((s) => ({
       calendarEvents: s.calendarEvents.filter((e) => e.id !== id),
