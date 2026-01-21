@@ -3,13 +3,23 @@
 
 import { useAppStore } from "@/state/app-store";
 import { IndiaTaxEngine } from "@/lib/tax/engine";
-import { TaxSectionUsage } from "@/domain/tax";
+import { TaxProfile, TaxSectionUsage } from "@/domain/tax";
 import { useEffect, useState } from "react";
 import { CheckCircle, Circle, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function TaxOptimizationPanel() {
-  const taxProfile = useAppStore((s) => s.taxProfile);
+  const storedTaxProfile = useAppStore((s) => s.taxProfile);
+  
+  // Default fallback
+  const taxProfile: TaxProfile = storedTaxProfile || {
+     id: "default",
+     jurisdiction: "IN",
+     regime: "new",
+     fiscalYearStart: "2024-04-01",
+     filingStatus: "individual"
+   };
+
   const [sections, setSections] = useState<TaxSectionUsage[]>([]);
 
   useEffect(() => {

@@ -5,13 +5,22 @@ import { useAppStore } from "@/state/app-store";
 import { ArrowDown, ArrowUp, DollarSign, Info, TrendingUp, Wallet } from "lucide-react";
 import { useEffect, useState } from "react";
 import { IndiaTaxEngine } from "@/lib/tax/engine";
-import { TaxBreakdown } from "@/domain/tax";
+import { TaxBreakdown, TaxProfile } from "@/domain/tax";
 
 export function TaxOverview() {
   const profile = useAppStore((s) => s.profile);
-  const taxProfile = useAppStore((s) => s.taxProfile);
+  const storedTaxProfile = useAppStore((s) => s.taxProfile);
   const assets = useAppStore((s) => s.assets);
   
+  // Default fallback
+  const taxProfile: TaxProfile = storedTaxProfile || {
+    id: "default",
+    jurisdiction: "IN",
+    regime: "new",
+    fiscalYearStart: "2024-04-01",
+    filingStatus: "individual"
+  };
+
   // Local state for the calculated breakdown
   const [breakdown, setBreakdown] = useState<TaxBreakdown | null>(null);
 
