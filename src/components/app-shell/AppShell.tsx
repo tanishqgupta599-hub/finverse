@@ -6,14 +6,37 @@ import { TopBar } from "./TopBar";
 import { useAppStore } from "@/state/app-store";
 import { useEffect } from "react";
 import { FloatingAI } from "@/components/ui/FloatingAI";
+import { useUser } from "@clerk/nextjs";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
+  const { user } = useUser();
   const demoDataEnabled = useAppStore((s) => s.demoDataEnabled);
   const seedDemoData = useAppStore((s) => s.seedDemoData);
+  const setProfile = useAppStore((s) => s.setProfile);
+  const profile = useAppStore((s) => s.profile);
 
   useEffect(() => {
     if (demoDataEnabled) seedDemoData();
   }, [demoDataEnabled, seedDemoData]);
+
+  // Sync Clerk user data with App Store profile
+  useEffect(() => {
+    if (user && profile) {
+      const newName = user.fullName || user.firstName || "Pilot";
+      const newEmail = user.primaryEmailAddress?.emailAddress || profile.email;
+      const newAvatar = user.imageUrl || profile.avatarUrl;
+
+      // Only update if data has changed to avoid infinite loops
+      if (profile.name !== newName || profile.email !== newEmail || profile.avatarUrl !== newAvatar) {
+        setProfile({
+          ...profile,
+          name: newName,
+          email: newEmail,
+          avatarUrl: newAvatar,
+        });
+      }
+    }
+  }, [user, profile, setProfile]);
 
   return (
     <div className="relative min-h-dvh w-full overflow-hidden bg-[#020410] text-zinc-100">
