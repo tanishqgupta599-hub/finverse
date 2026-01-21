@@ -1,5 +1,4 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
-import { NextResponse } from 'next/server'
 
 const isPublicRoute = createRouteMatcher([
   '/',
@@ -14,13 +13,6 @@ const isPublicRoute = createRouteMatcher([
 ])
 
 export const proxy = clerkMiddleware(async (auth, request) => {
-  const { userId } = await auth()
-
-  // If user is logged in and visits the landing page, redirect to home
-  if (userId && request.nextUrl.pathname === '/') {
-    return NextResponse.redirect(new URL('/home', request.url))
-  }
-
   if (!isPublicRoute(request)) {
     await auth.protect()
   }
