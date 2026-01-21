@@ -42,7 +42,8 @@ export function NetWorthSummaryCard() {
   const totalAssets = assets.reduce((a, b) => a + b.value, 0);
   const totalDebt = loans.reduce((a, b) => a + b.balance, 0);
   const totalLiabilities = liabilities.reduce((a, b) => a + b.balance, 0);
-  const netWorth = totalAssets - (totalDebt + totalLiabilities);
+  const totalCreditCardDebt = creditCards.reduce((a, b) => a + b.balance, 0);
+  const netWorth = totalAssets - (totalDebt + totalLiabilities + totalCreditCardDebt);
 
   return (
     <Card className="h-full bg-gradient-to-br from-cyan-500/15 via-sky-500/10 to-emerald-500/15 border border-cyan-500/30">
@@ -55,7 +56,7 @@ export function NetWorthSummaryCard() {
         </div>
         <div className="mt-2 flex items-center justify-between text-xs text-cyan-100/80">
           <span>Assets ₹{totalAssets.toLocaleString("en-IN")}</span>
-          <span>Debt ₹{(totalDebt + totalLiabilities).toLocaleString("en-IN")}</span>
+          <span>Debt ₹{(totalDebt + totalLiabilities + totalCreditCardDebt).toLocaleString("en-IN")}</span>
         </div>
       </CardContent>
     </Card>

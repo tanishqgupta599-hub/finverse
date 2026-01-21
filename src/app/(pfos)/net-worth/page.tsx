@@ -15,6 +15,7 @@ export default function NetWorth() {
   const assets = useAppStore((s) => s.assets);
   const loans = useAppStore((s) => s.loans);
   const liabilities = useAppStore((s) => s.liabilities);
+  const creditCards = useAppStore((s) => s.creditCards);
   const addAsset = useAppStore((s) => s.addAsset);
   const updateAsset = useAppStore((s) => s.updateAsset);
   const addLiability = useAppStore((s) => s.addLiability);
@@ -208,7 +209,7 @@ export default function NetWorth() {
               <div className="rounded-2xl bg-gradient-to-br from-rose-500/15 via-orange-500/10 to-amber-500/15 p-4 text-sm border border-rose-500/30">
                 <div className="text-xs text-rose-100/80">Debt + liabilities</div>
                 <div className="mt-1 text-lg font-semibold text-white">
-                  ₹{(totalDebt + totalLiabilities).toLocaleString("en-IN")}
+                  ₹{(totalDebt + totalLiabilities + totalCreditCardDebt).toLocaleString("en-IN")}
                 </div>
               </div>
               <div className="rounded-2xl bg-gradient-to-br from-indigo-500/15 via-blue-500/10 to-cyan-500/15 p-4 text-sm border border-indigo-500/30">
