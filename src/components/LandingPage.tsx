@@ -62,17 +62,30 @@ export default function LandingPage() {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center gap-4"
           >
-            <Link href="/sign-in" className="hidden text-sm font-medium text-zinc-400 hover:text-white md:block">
-              Sign in
-            </Link>
-            <Link
-              href="/sign-up"
-              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-white px-6 py-2 text-sm font-semibold text-slate-950 transition-all hover:bg-cyan-50"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                Get Started <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </span>
-            </Link>
+            {isLoaded && isSignedIn ? (
+               <Link
+               href="/home"
+               className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-emerald-500 px-6 py-2 text-sm font-semibold text-white transition-all hover:bg-emerald-600"
+             >
+               <span className="relative z-10 flex items-center gap-2">
+                 Go to Dashboard <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+               </span>
+             </Link>
+            ) : (
+              <>
+                <Link href="/sign-in" className="hidden text-sm font-medium text-zinc-400 hover:text-white md:block">
+                  Sign in
+                </Link>
+                <Link
+                  href="/sign-up"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-white px-6 py-2 text-sm font-semibold text-slate-950 transition-all hover:bg-cyan-50"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    Get Started <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              </>
+            )}
           </motion.div>
         </header>
 
