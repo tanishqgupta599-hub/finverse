@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   ArrowRight, Shield, Target, Wallet2, CreditCard, LineChart, 
@@ -9,6 +12,15 @@ import {
 } from "lucide-react";
 
 export default function Landing() {
+  const { isSignedIn, isLoaded } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      router.push("/home");
+    }
+  }, [isLoaded, isSignedIn, router]);
+
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-[#020410] text-white selection:bg-cyan-500/30">
       {/* Background Effects */}

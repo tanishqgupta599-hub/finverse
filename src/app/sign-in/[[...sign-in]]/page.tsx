@@ -110,7 +110,7 @@ export default function Page() {
           <SignIn 
             routing="path" 
             path="/sign-in" 
-            fallbackRedirectUrl="/home"
+            forceRedirectUrl="/home"
             signUpUrl="/sign-up"
           />
         </motion.div>
