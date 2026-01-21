@@ -8,6 +8,7 @@ export function NetWorthSummaryCard() {
   const assets = useAppStore((s) => s.assets);
   const loans = useAppStore((s) => s.loans);
   const liabilities = useAppStore((s) => s.liabilities);
+  const creditCards = useAppStore((s) => s.creditCards);
   const demoEnabled = useAppStore((s) => s.demoDataEnabled);
   const [mounted, setMounted] = useState(false);
 
