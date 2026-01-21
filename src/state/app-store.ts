@@ -81,13 +81,17 @@ type AppActions = {
   addFriend: (friend: Friend) => void;
   addCalendarEvent: (event: CalendarEvent) => void;
   removeCalendarEvent: (id: string) => void;
+  isLoading: boolean;
+  fetchUserData: () => Promise<void>;
+  syncUser: () => Promise<void>;
 };
 
 export const useAppStore = create<AppState & AppActions>((set) => ({
   profile: demoProfile(),
   profileMode: "Balanced",
   overwhelmMode: false,
-  demoDataEnabled: true,
+  demoDataEnabled: true, // Default to true until we fetch real data
+  isLoading: false,
   featureFlags: defaultFeatureFlags,
   onboardingCompleted: false,
   assets: [],
@@ -116,6 +120,56 @@ export const useAppStore = create<AppState & AppActions>((set) => ({
   circles: [],
   friends: [],
   calendarEvents: [],
+  
+  // New actions
+  fetchUserData: async () => {
+    set({ isLoading: true });
+    try {
+      const response = await fetch("/api/bootstrap");
+      if (response.ok) {
+        const data = await response.json();
+        set({
+          profile: data, 
+          assets: data.assets || [],
+          loans: data.loans || [],
+          liabilities: data.liabilities || [],
+          transactions: data.transactions || [],
+          subscriptions: data.subscriptions || [],
+          creditCards: data.creditCards || [],
+          insurancePolicies: data.insurancePolicies || [],
+          goals: data.goals || [],
+          calendarEvents: data.calendarEvents || [],
+          scamChecks: data.scamChecks || [],
+          autopsyReports: data.autopsyReports || [],
+          actions: data.actionItems || [],
+          emergencyContacts: data.emergencyContacts || [],
+          vaultDocuments: data.vaultDocuments || [],
+          friends: data.friends || [],
+          circles: data.circles || [],
+          demoDataEnabled: false, 
+        });
+      }
+    } catch (error) {
+      console.error("Failed to fetch user data:", error);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  syncUser: async () => {
+    try {
+      const response = await fetch("/api/user/sync", { method: "POST" });
+      if (response.ok) {
+        const userData = await response.json();
+        set((state) => ({
+           profile: { ...state.profile, ...userData }
+        }));
+      }
+    } catch (error) {
+      console.error("Failed to sync user:", error);
+    }
+  },
+
   toggleOverwhelmMode: () => set((s) => ({ overwhelmMode: !s.overwhelmMode })),
   setProfileMode: (mode) => set(() => ({ profileMode: mode })),
   setProfile: (profile) => set(() => ({ profile })),

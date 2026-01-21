@@ -1,0 +1,435 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Enums based on your domain models
+enum ProfileMode {
+  Growth
+  Balanced
+  Peace
+  Senior
+}
+
+enum RiskProfile {
+  conservative
+  balanced
+  aggressive
+  optimizer
+}
+
+enum IncomeType {
+  salary
+  business
+  freelance
+  passive
+  other
+}
+
+enum Frequency {
+  monthly
+  weekly
+  yearly
+  irregular
+}
+
+enum EmploymentType {
+  student
+  salaried
+  self_employed @map("self-employed")
+  business
+  unemployed
+  retired
+}
+
+enum AssetType {
+  cash
+  investment
+  property
+  other
+}
+
+enum LiabilityType {
+  loan
+  mortgage
+  credit
+  other
+}
+
+enum TransactionCategory {
+  income
+  spending
+  transfer
+  grocery
+  entertainment
+  utilities
+  shopping
+  travel
+  health
+  dining
+  other
+}
+
+enum SubscriptionCadence {
+  monthly
+  yearly
+  weekly
+}
+
+enum CardBrand {
+  visa
+  mastercard
+  amex
+  discover
+  other
+}
+
+enum PolicyType {
+  health
+  life
+  home
+  auto
+  other
+}
+
+enum GoalType {
+  retirement
+  emergency
+  family
+  travel
+  education
+  home
+  other
+}
+
+enum GoalPriority {
+  low
+  medium
+  high
+}
+
+enum CalendarEventType {
+  bill
+  income
+  other
+}
+
+enum ScamRiskLevel {
+  low
+  medium
+  high
+}
+
+enum ScamStatus {
+  pending
+  safe
+  review
+}
+
+enum ActionStatus {
+  new
+  in_progress
+  done
+}
+
+// Models
+
+model User {
+  id                    String            @id @default(cuid())
+  clerkId               String            @unique // Link to Clerk Auth
+  email                 String            @unique
+  name                  String?
+  avatarUrl             String?
+  mode                  ProfileMode       @default(Balanced)
+  riskProfile           RiskProfile?
+  financialArchetype    String?
+  profession            String?
+  ageRange              String?
+  country               String?
+  currency              String?           @default("INR")
+  hasDependents         Boolean?
+  employment            EmploymentType?
+  monthlyIncomeRange    String?
+  monthlyFixedCostRange String?
+  insuranceHealth       Boolean?
+  insuranceTerm         Boolean?
+  emergencyContactName  String?
+  emergencyContactPhone String?
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  // Relations
+  incomeStreams   IncomeStream[]
+  assets          Asset[]
+  liabilities     Liability[]
+  loans           Loan[]
+  transactions    Transaction[]
+  subscriptions   Subscription[]
+  creditCards     CreditCard[]
+  insurancePolicies InsurancePolicy[]
+  goals           Goal[]
+  calendarEvents  CalendarEvent[]
+  scamChecks      ScamCheck[]
+  autopsyReports  AutopsyReport[]
+  actionItems     ActionItem[]
+  emergencyContacts EmergencyContact[]
+  vaultDocuments  VaultDocument[]
+  friends         Friend[]
+  circles         ExpenseCircle[]   @relation("UserCircles")
+  ownedCircles    ExpenseCircle[]   @relation("CircleOwner")
+}
+
+model IncomeStream {
+  id             String      @id @default(cuid())
+  userId         String
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  type           IncomeType
+  amount         Float
+  frequency      Frequency
+  predictability Int         @default(100) // 0-100
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model Asset {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  type        AssetType
+  value       Float
+  institution String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Liability {
+  id        String        @id @default(cuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  type      LiabilityType
+  balance   Float
+  apr       Float?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model Loan {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  principal      Float
+  balance        Float
+  apr            Float
+  monthlyPayment Float
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Transaction {
+  id          String              @id @default(cuid())
+  userId      String
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        DateTime
+  description String
+  amount      Float
+  category    TransactionCategory
+  account     String?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+}
+
+model Subscription {
+  id             String              @id @default(cuid())
+  userId         String
+  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  amount         Float
+  cadence        SubscriptionCadence
+  nextChargeDate DateTime
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+}
+
+model CreditCard {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String?
+  brand         CardBrand
+  last4         String
+  limit         Float
+  balance       Float
+  billAmount    Float?
+  billDueDate   DateTime?
+  apr           Float?
+  pointsBalance Float?
+  nextBillDate  DateTime?
+  rewardProgram String?
+  annualFee     Float?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model InsurancePolicy {
+  id             String     @id @default(cuid())
+  userId         String
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type           PolicyType
+  provider       String
+  premium        Float
+  coverageAmount Float?
+  renewalDate    DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+model Goal {
+  id            String       @id @default(cuid())
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String
+  type          GoalType
+  targetAmount  Float
+  currentAmount Float
+  dueDate       DateTime?
+  priority      GoalPriority
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model CalendarEvent {
+  id          String            @id @default(cuid())
+  userId      String
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        DateTime
+  title       String
+  amount      Float
+  type        CalendarEventType
+  isRecurring Boolean           @default(false)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model ScamCheck {
+  id          String        @id @default(cuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  riskLevel   ScamRiskLevel
+  status      ScamStatus
+  notes       String?
+  description String?
+  date        DateTime      @default(now())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model AutopsyReport {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  date      DateTime
+  summary   String
+  findings  String[] // Array of strings
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ActionItem {
+  id          String       @id @default(cuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  reason      String
+  impactLabel String
+  safe        Boolean
+  status      ActionStatus @default(new)
+  whyThis     String
+  consequence String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  steps ActionStep[]
+}
+
+model ActionStep {
+  id           String     @id @default(cuid())
+  actionItemId String
+  actionItem   ActionItem @relation(fields: [actionItemId], references: [id], onDelete: Cascade)
+  label        String
+  done         Boolean    @default(false)
+}
+
+model EmergencyContact {
+  id           String  @id @default(cuid())
+  userId       String
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  phone        String
+  relationship String?
+}
+
+model VaultDocument {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  category  String
+  tags      String[] // Array of strings
+  url       String?
+  dateAdded DateTime @default(now())
+}
+
+model Friend {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  email        String?
+  phone        String?
+  avatarUrl    String?
+  balance      Float    @default(0)
+  relationType String   @default("friend") // friend, family, colleague
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ExpenseCircle {
+  id          String   @id @default(cuid())
+  ownerId     String
+  owner       User     @relation("CircleOwner", fields: [ownerId], references: [id])
+  name        String
+  description String?
+  emoji       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members User[]          @relation("UserCircles")
+  expenses SharedExpense[]
+}
+
+model SharedExpense {
+  id          String        @id @default(cuid())
+  circleId    String
+  circle      ExpenseCircle @relation(fields: [circleId], references: [id], onDelete: Cascade)
+  paidById    String // ID of the user (or friend) who paid
+  amount      Float
+  description String
+  date        DateTime      @default(now())
+  splitType   String        @default("equal") // equal, exact, percentage
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
